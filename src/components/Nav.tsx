@@ -22,6 +22,18 @@ export default function Nav() {
       }}>
         💍 MARILOG
       </Link>
+      <span style={{
+        fontSize: 10,
+        color: 'var(--g500)',
+        border: '1px solid var(--g300)',
+        borderRadius: 4,
+        padding: '2px 6px',
+        marginLeft: 8,
+        letterSpacing: '0.03em',
+        whiteSpace: 'nowrap',
+      }}>
+        パイロット運用中
+      </span>
     </nav>
   )
 }
