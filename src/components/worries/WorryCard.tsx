@@ -259,7 +259,6 @@ export default function WorryCard({ post, currentUserId }: Props) {
                   placeholder="コメントを入力..."
                   value={commentText}
                   onChange={e => setCommentText(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSubmitComment()}
                   disabled={isPending}
                 />
                 <button
