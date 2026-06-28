@@ -1,26 +1,266 @@
 @import "tailwindcss";
 
+/* ── デザイントークン ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Pink */
+  --pk50: #FBEAF0;
+  --pk100: #F4C0D1;
+  --pk400: #D4537E;
+  --pk600: #993556;
+  --pk800: #72243E;
+  /* Teal */
+  --tc50: #E1F5EE;
+  --tc100: #9FE1CB;
+  --tc400: #1D9E75;
+  --tc600: #0F6E56;
+  --tc800: #085041;
+  /* Amber */
+  --am50: #FAEEDA;
+  --am400: #EF9F27;
+  --am600: #854F0B;
+  /* Purple */
+  --pu50: #EEEDFE;
+  --pu400: #7F77DD;
+  --pu600: #534AB7;
+  /* Gray */
+  --g50: #F8F7F5;
+  --g100: #F0EEE9;
+  --g200: #E8E6E0;
+  --g600: #5F5E5A;
+  --g800: #2C2C2A;
+  /* Misc */
+  --bd: 1px solid #E8E6E0;
+  --rsm: 8px;
+  --rmd: 12px;
+  --rlg: 16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  background: var(--g50);
+  color: var(--g800);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-bottom: 70px;
+}
+
+/* ── SHARED UTILITIES ── */
+.card {
+  background: #fff;
+  border: var(--bd);
+  border-radius: var(--rlg);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--g800);
+}
+
+.section-sub {
+  font-size: 12px;
+  color: var(--g600);
+  margin-bottom: 1.25rem;
+}
+
+/* Field inputs */
+.field {
+  margin-bottom: 0.85rem;
+}
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--g600);
+  margin-bottom: 5px;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: var(--bd);
+  border-radius: var(--rsm);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--g800);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--pk400);
+}
+.field textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+/* Tags */
+.tag {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: var(--bd);
+  background: var(--g50);
+  color: var(--g600);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s;
+}
+.tag.active-p {
+  background: var(--pk50);
+  border-color: var(--pk100);
+  color: var(--pk800);
+}
+.tag.active-t {
+  background: var(--tc50);
+  border-color: var(--tc100);
+  color: var(--tc800);
+}
+
+/* Buttons */
+.sbtn {
+  width: 100%;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  border-radius: var(--rmd);
+  border: none;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.sbtn-pk { background: var(--pk400); }
+.sbtn-pk:hover { background: var(--pk600); }
+.sbtn-tc { background: var(--tc400); }
+.sbtn-tc:hover { background: var(--tc600); }
+
+/* Satisfaction meter dots */
+.mdot {
+  height: 12px;
+  flex: 1;
+  border-radius: 4px;
+  background: var(--g100);
+  border: var(--bd);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+/* Satisfaction chip */
+.sat-chip {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Comments */
+.cm {
+  background: var(--g50);
+  border-radius: var(--rsm);
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 6px;
+}
+.ctext {
+  font-size: 13px;
+  color: var(--g600);
+  line-height: 1.55;
+}
+.cinput {
+  flex: 1;
+  padding: 7px 10px;
+  border: var(--bd);
+  border-radius: var(--rsm);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.cinput:focus { border-color: var(--pk400); }
+.csend {
+  padding: 7px 14px;
+  background: var(--pk400);
+  border: none;
+  border-radius: var(--rsm);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Trust badge */
+.tbadge {
+  font-size: 10px;
+  background: var(--am50);
+  color: var(--am600);
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+/* Segment filters */
+.seg {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: var(--bd);
+  background: var(--g50);
+  color: var(--g600);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s;
+}
+.seg.active {
+  background: var(--pk50);
+  border-color: var(--pk100);
+  color: var(--pk800);
+  font-weight: 500;
+}
+
+/* Option band */
+.optband {
+  background: var(--am50);
+  border-radius: var(--rsm);
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ubadge {
+  font-size: 11px;
+  background: var(--am400);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Locked block */
+.locked-block {
+  background: var(--g100);
+  border-radius: var(--rmd);
+  padding: 1.1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Done screen */
+.sugbox {
+  background: var(--tc50);
+  border-radius: var(--rmd);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  margin-bottom: 1.25rem;
 }

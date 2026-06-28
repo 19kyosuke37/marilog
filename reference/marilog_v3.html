@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARILOG — 結婚のリアルをシェアしよう</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pk50:#FBEAF0;--pk100:#F4C0D1;--pk400:#D4537E;--pk600:#993556;--pk800:#72243E;
+  --tc50:#E1F5EE;--tc100:#9FE1CB;--tc400:#1D9E75;--tc600:#0F6E56;--tc800:#085041;
+  --am50:#FAEEDA;--am400:#EF9F27;--am600:#854F0B;
+  --pu50:#EEEDFE;--pu400:#7F77DD;--pu600:#534AB7;
+  --g50:#F8F7F5;--g100:#F0EEE9;--g200:#E8E6E0;--g600:#5F5E5A;--g800:#2C2C2A;
+  --bd:1px solid #E8E6E0;--rsm:8px;--rmd:12px;--rlg:16px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;background:var(--g50);color:var(--g800);font-size:15px;line-height:1.6;min-height:100vh;padding-bottom:70px;}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:var(--bd);padding:0 1.25rem;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-size:16px;font-weight:700;color:var(--pk600);letter-spacing:.06em;cursor:pointer;}
+
+/* ── BOTTOM TAB BAR ── */
+.tabbar-bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:var(--bd);display:flex;z-index:100;height:58px;}
+.tbb-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border:none;background:none;font-size:10px;color:var(--g600);padding:6px 0 8px;transition:color .15s;}
+.tbb-item i{font-size:22px;}
+.tbb-item.on{color:var(--pk400);}
+
+/* ── PAGES ── */
+.page{display:none;max-width:640px;margin:0 auto;padding:1.25rem 1rem 2rem;}
+.page.on{display:block;}
+
+/* ── SHARED ── */
+.section-title{font-size:18px;font-weight:700;margin-bottom:4px;color:var(--g800);}
+.section-sub{font-size:12px;color:var(--g600);margin-bottom:1.25rem;}
+.card{background:#fff;border:var(--bd);border-radius:var(--rlg);padding:1.1rem 1.25rem;margin-bottom:10px;}
+.field{margin-bottom:.85rem;}
+.field label{display:block;font-size:13px;color:var(--g600);margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;border:var(--bd);border-radius:var(--rsm);font-size:14px;font-family:inherit;color:var(--g800);background:#fff;outline:none;transition:border-color .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pk400);}
+.field textarea{height:80px;resize:vertical;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.tag{padding:5px 12px;border-radius:999px;font-size:12px;border:var(--bd);background:var(--g50);color:var(--g600);cursor:pointer;user-select:none;transition:all .1s;}
+.tag.p{background:var(--pk50);border-color:var(--pk100);color:var(--pk800);}
+.tag.t{background:var(--tc50);border-color:var(--tc100);color:var(--tc800);}
+.grow{display:flex;gap:8px;margin-top:5px;}
+.gbtn{flex:1;padding:9px;border:var(--bd);border-radius:var(--rsm);background:#fff;font-size:13px;color:var(--g600);cursor:pointer;text-align:center;transition:all .1s;}
+.gbtn.gm{background:var(--pu50);border-color:#C5C1F5;color:var(--pu600);font-weight:500;}
+.gbtn.gf{background:var(--pk50);border-color:var(--pk100);color:var(--pk800);font-weight:500;}
+.gbtn.go{background:var(--am50);border-color:#F0CFA0;color:var(--am600);font-weight:500;}
+.meter{display:flex;gap:5px;margin-top:6px;}
+.mdot{height:12px;flex:1;border-radius:4px;background:var(--g100);border:var(--bd);cursor:pointer;transition:background .1s;}
+.mlbl{font-size:12px;color:var(--g600);margin-top:4px;}
+.otherbox{margin-top:6px;display:none;}
+.otherbox input{width:100%;padding:8px 12px;border:var(--bd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;}
+.otherbox input:focus{border-color:var(--pk400);}
+.sbtn{width:100%;padding:13px;font-size:15px;font-weight:600;margin-top:.5rem;cursor:pointer;border-radius:var(--rmd);border:none;color:#fff;letter-spacing:.02em;}
+.sbtn.pk{background:var(--pk400);}
+.sbtn.pk:hover{background:var(--pk600);}
+.sbtn.tc{background:var(--tc400);}
+.sbtn.tc:hover{background:var(--tc600);}
+.backbtn{display:flex;align-items:center;gap:6px;background:none;border:none;font-size:13px;color:var(--g600);cursor:pointer;margin-bottom:1rem;padding:0;}
+.optband{background:var(--am50);border-radius:var(--rsm);padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.optband>span{font-size:12px;color:var(--am600);}
+.ubadge{font-size:11px;background:var(--am400);color:#fff;padding:2px 10px;border-radius:999px;font-weight:600;}
+.chead{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+.cico{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ip{background:var(--pk50);color:var(--pk600);}
+.it{background:var(--tc50);color:var(--tc600);}
+.ia{background:var(--am50);color:var(--am600);}
+.iu{background:var(--pu50);color:var(--pu600);}
+.ctitle{font-size:14px;font-weight:600;}
+.done{display:none;text-align:center;padding:2rem 1rem;}
+.done-ico{font-size:52px;color:var(--tc400);margin-bottom:1rem;}
+.done h3{font-size:20px;font-weight:600;margin-bottom:.4rem;}
+.done>p{font-size:14px;color:var(--g600);margin-bottom:1.25rem;}
+.sugbox{background:var(--tc50);border-radius:var(--rmd);padding:1rem 1.25rem;text-align:left;margin-bottom:1.25rem;}
+.sugbox p{font-size:13px;color:var(--tc800);font-weight:600;margin-bottom:.4rem;}
+.sugbox span{font-size:13px;color:var(--tc600);}
+.rbtn{background:none;border:var(--bd);border-radius:var(--rmd);padding:10px 24px;font-size:14px;color:var(--g600);cursor:pointer;}
+.fhero{border-radius:var(--rlg);padding:1.1rem 1.4rem;margin-bottom:1.25rem;}
+.fhero.pk{background:var(--pk50);}
+.fhero.tc{background:var(--tc50);}
+.fhero h2{font-size:18px;font-weight:600;margin-bottom:.2rem;}
+.fhero.pk h2{color:var(--pk800);}
+.fhero.tc h2{color:var(--tc800);}
+.fhero p{font-size:13px;}
+.fhero.pk p{color:var(--pk600);}
+.fhero.tc p{color:var(--tc600);}
+.empty{text-align:center;padding:3rem 1rem;color:var(--g600);font-size:14px;}
+
+/* ── TOP ── */
+.hero{text-align:center;padding:2rem 1rem 1.5rem;}
+.eyebrow{font-size:11px;font-weight:600;color:var(--pk600);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.hero h1{font-size:28px;font-weight:700;line-height:1.3;margin-bottom:.6rem;}
+.hero h1 em{color:var(--pk400);font-style:normal;}
+.hero>p{font-size:14px;color:var(--g600);max-width:360px;margin:0 auto 1.5rem;word-break:keep-all;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;}
+.sbox{background:#fff;border:var(--bd);border-radius:var(--rmd);padding:.85rem;text-align:center;}
+.snum{font-size:22px;font-weight:700;color:var(--pk400);}
+.slbl{font-size:11px;color:var(--g600);margin-top:2px;}
+.entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ecard{background:#fff;border:var(--bd);border-radius:var(--rlg);padding:1.25rem 1rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:left;}
+.ecard:hover{transform:translateY(-2px);}
+.ecard.pk:hover{border-color:var(--pk400);}
+.ecard.tc:hover{border-color:var(--tc400);}
+.ecard-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:.75rem;}
+.ecard h3{font-size:14px;font-weight:600;margin-bottom:.25rem;}
+.ecard p{font-size:12px;color:var(--g600);line-height:1.5;margin:0 0 .75rem;}
+.ecard-arr{font-size:12px;color:var(--g600);display:flex;align-items:center;gap:3px;}
+
+/* ── みんなの悩み ── */
+.worry-tabs{display:flex;border-bottom:var(--bd);margin-bottom:1rem;}
+.wtab{padding:9px 14px;font-size:13px;color:var(--g600);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.wtab.on{color:var(--pk600);border-bottom-color:var(--pk400);font-weight:600;}
+.wcard{background:#fff;border:var(--bd);border-radius:var(--rlg);padding:1rem 1.1rem;margin-bottom:10px;}
+.wcard-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;}
+.wbadge{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:600;}
+.bpk{background:var(--pk50);color:var(--pk800);}
+.btc{background:var(--tc50);color:var(--tc800);}
+.wmeta{font-size:12px;color:var(--g600);}
+.wtags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.5rem;}
+.wtag{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--g100);color:var(--g600);border:var(--bd);}
+.wbody{font-size:13px;color:var(--g600);line-height:1.65;margin-bottom:.6rem;}
+.satrow{display:flex;align-items:center;gap:8px;margin-bottom:.6rem;}
+.satbg{flex:1;height:5px;background:var(--g100);border-radius:3px;}
+.satfill{height:5px;border-radius:3px;}
+.satlbl{font-size:11px;color:var(--g600);min-width:58px;}
+.csec{border-top:var(--bd);padding-top:.85rem;margin-top:.75rem;}
+.clist{display:none;}
+.clist.on{display:block;}
+.cm{background:var(--g50);border-radius:var(--rsm);padding:.65rem .85rem;margin-bottom:6px;}
+.cuser{font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.tbadge{font-size:10px;background:var(--am50);color:var(--am600);padding:1px 6px;border-radius:999px;}
+.ctext{font-size:13px;color:var(--g600);line-height:1.55;}
+.cacts{display:flex;gap:8px;margin-top:4px;}
+.clke{background:none;border:none;font-size:11px;color:var(--g600);cursor:pointer;display:flex;align-items:center;gap:3px;padding:0;}
+.clke:hover,.clke.lk{color:var(--pk400);}
+.cform{margin-top:8px;display:flex;gap:6px;}
+.cinput{flex:1;padding:7px 10px;border:var(--bd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;}
+.cinput:focus{border-color:var(--pk400);}
+.csend{padding:7px 14px;background:var(--pk400);border:none;border-radius:var(--rsm);color:#fff;font-size:13px;cursor:pointer;}
+.trust-bar{background:var(--am50);border:var(--bd);border-radius:var(--rmd);padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;}
+.trust-left p{font-size:13px;color:var(--am600);font-weight:600;margin-bottom:1px;}
+.trust-left span{font-size:11px;color:var(--am600);}
+.tscore{font-size:24px;font-weight:700;color:var(--am600);}
+.wact{background:none;border:none;font-size:12px;color:var(--g600);cursor:pointer;display:flex;align-items:center;gap:4px;padding:0;}
+
+/* ── 先輩DB ── */
+.filter-row{margin-bottom:1rem;}
+.filter-lbl{font-size:11px;font-weight:600;color:var(--g600);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.seg-group{display:flex;gap:6px;flex-wrap:wrap;}
+.seg{padding:5px 14px;border-radius:999px;font-size:12px;border:var(--bd);background:var(--g50);color:var(--g600);cursor:pointer;user-select:none;transition:all .1s;}
+.seg.on-p{background:var(--pk50);border-color:var(--pk100);color:var(--pk800);font-weight:500;}
+.rcount{font-size:12px;color:var(--g600);margin-bottom:.75rem;}
+.scard{background:#fff;border:var(--bd);border-radius:var(--rlg);padding:1rem 1.1rem;margin-bottom:10px;cursor:pointer;transition:border-color .15s;}
+.scard:hover{border-color:var(--pk100);}
+.scard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.scard-id{font-size:13px;font-weight:600;}
+.sat-chip{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:600;}
+.scard-data{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:.6rem;}
+.sdata-item{background:var(--g50);border-radius:var(--rsm);padding:.4rem .6rem;}
+.sdata-lbl{font-size:10px;color:var(--g600);}
+.sdata-val{font-size:13px;font-weight:600;color:var(--g800);}
+.scard-body{font-size:13px;color:var(--g600);line-height:1.6;margin-bottom:.5rem;}
+.scard-more{font-size:12px;color:var(--pk600);display:flex;align-items:center;gap:3px;}
+/* 先輩詳細 */
+.detail-hero{background:var(--pk50);border-radius:var(--rlg);padding:1.1rem 1.25rem;margin-bottom:1rem;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem;}
+.detail-item{background:#fff;border:var(--bd);border-radius:var(--rsm);padding:.65rem .85rem;}
+.detail-lbl{font-size:11px;color:var(--g600);margin-bottom:2px;}
+.detail-val{font-size:14px;font-weight:600;color:var(--g800);}
+.detail-section{margin-bottom:1rem;}
+.detail-section-title{font-size:13px;font-weight:600;color:var(--g600);margin-bottom:.5rem;border-bottom:var(--bd);padding-bottom:4px;}
+.locked-block{background:var(--g100);border-radius:var(--rmd);padding:1.1rem;text-align:center;margin-bottom:1rem;}
+.locked-block i{font-size:24px;color:var(--g600);display:block;margin-bottom:6px;}
+.locked-block p{font-size:13px;color:var(--g600);}
+.locked-block small{font-size:11px;color:var(--am600);margin-top:4px;display:block;}
+
+/* ── 投稿（ログイン分岐） ── */
+.login-prompt{text-align:center;padding:3rem 1rem;}
+.login-prompt i{font-size:48px;color:var(--pk400);display:block;margin-bottom:1rem;}
+.login-prompt h3{font-size:18px;font-weight:600;margin-bottom:.5rem;}
+.login-prompt p{font-size:13px;color:var(--g600);margin-bottom:1.5rem;line-height:1.7;}
+.login-actions{display:flex;flex-direction:column;gap:8px;max-width:280px;margin:0 auto;}
+
+/* ── マイページ ── */
+.mypage-header{text-align:center;padding:1.5rem 1rem 1rem;}
+.mypage-avatar{width:72px;height:72px;border-radius:50%;background:var(--pk50);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto .75rem;border:2px solid var(--pk100);}
+.mypage-name{font-size:16px;font-weight:600;margin-bottom:4px;}
+.mypage-sub{font-size:12px;color:var(--g600);}
+.mypage-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem;}
+.mystat{background:#fff;border:var(--bd);border-radius:var(--rmd);padding:.75rem;text-align:center;}
+.mystat-num{font-size:20px;font-weight:700;color:var(--pk400);}
+.mystat-lbl{font-size:11px;color:var(--g600);margin-top:2px;}
+.mypage-menu{background:#fff;border:var(--bd);border-radius:var(--rlg);overflow:hidden;}
+.menu-item{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.1rem;border-bottom:var(--bd);cursor:pointer;transition:background .1s;}
+.menu-item:last-child{border-bottom:none;}
+.menu-item:hover{background:var(--g50);}
+.menu-left{display:flex;align-items:center;gap:10px;font-size:14px;}
+.menu-left i{font-size:18px;color:var(--g600);}
+.no-profile-msg{background:var(--pk50);border-radius:var(--rlg);padding:1.5rem;text-align:center;margin-bottom:1.25rem;}
+.no-profile-msg i{font-size:28px;color:var(--pk400);display:block;margin-bottom:.6rem;}
+.no-profile-msg p{font-size:14px;color:var(--pk800);margin-bottom:.75rem;}
+
+/* ── 登録フォーム（モーダル風） ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.on{display:flex;}
+.modal-box{background:#fff;border-radius:var(--rlg);padding:1.75rem 1.5rem;max-width:340px;width:90%;text-align:center;}
+.modal-icon{font-size:36px;color:var(--pk400);margin-bottom:.6rem;}
+.modal-box h3{font-size:17px;font-weight:600;margin-bottom:.4rem;}
+.modal-box p{font-size:13px;color:var(--g600);margin-bottom:1.1rem;line-height:1.6;}
+.modal-actions{display:flex;flex-direction:column;gap:8px;}
+.modal-primary{padding:11px;background:var(--pk400);color:#fff;border:none;border-radius:var(--rmd);font-size:14px;font-weight:600;cursor:pointer;}
+.modal-primary:hover{background:var(--pk600);}
+.modal-secondary{padding:11px;background:none;color:var(--g600);border:var(--bd);border-radius:var(--rmd);font-size:14px;cursor:pointer;}
+.modal-secondary:hover{background:var(--g100);}
+
+/* ── 登録画面 ── */
+.reg-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem;}
+.rtcard{background:#fff;border:var(--bd);border-radius:var(--rlg);padding:1.25rem 1rem;cursor:pointer;text-align:left;transition:border-color .15s,transform .1s;}
+.rtcard:hover{transform:translateY(-2px);}
+.rtcard.pk:hover{border-color:var(--pk400);}
+.rtcard.tc:hover{border-color:var(--tc400);}
+.rtcard-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:.75rem;}
+.rtcard h3{font-size:14px;font-weight:600;margin-bottom:.2rem;}
+.rtcard p{font-size:12px;color:var(--g600);margin:0;}
+
+@media(max-width:480px){
+  .hero h1{font-size:24px;}
+  .entry-cards,.reg-type-cards,.r2{grid-template-columns:1fr;}
+  .r3{grid-template-columns:1fr 1fr;}
+  .stats,.mypage-stats{grid-template-columns:1fr 1fr;}
+  .scard-data{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="gp('top')">💍 MARILOG</div>
+  <div id="nav-user-info" style="font-size:12px;color:var(--g600);"></div>
+</nav>
+
+<!-- ============ TOP ============ -->
+<div class="page" id="page-top">
+  <div class="hero">
+    <div class="eyebrow">Marriage Log</div>
+    <h1>結婚の<em>リアル</em>を、<br>シェアしよう。</h1>
+    <p>自分と似た条件の先輩が、結婚してどうなったか。データで知る、体験談で知る。</p>
+  </div>
+  <div class="stats">
+    <div class="sbox"><div class="snum">247</div><div class="slbl">件の投稿</div></div>
+    <div class="sbox"><div class="snum">86</div><div class="slbl">先輩登録数</div></div>
+  </div>
+  <div class="entry-cards">
+    <div class="ecard pk" onclick="gp('senpai')">
+      <div class="ecard-ico ip"><i class="ti ti-database"></i></div>
+      <h3>先輩データベース</h3>
+      <p>条件で絞って先輩を探す</p>
+      <div class="ecard-arr">検索する <i class="ti ti-arrow-right"></i></div>
+    </div>
+    <div class="ecard tc" onclick="gp('worries')">
+      <div class="ecard-ico it"><i class="ti ti-messages"></i></div>
+      <h3>みんなの悩み</h3>
+      <p>リアルな体験談・相談を見る</p>
+      <div class="ecard-arr">見る <i class="ti ti-arrow-right"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ みんなの悩み（デフォルト表示） ============ -->
+<div class="page on" id="page-worries">
+  <div class="section-title">みんなの悩み</div>
+  <div class="section-sub">投稿するとコメントが閲覧できます</div>
+  <div class="trust-bar">
+    <div class="trust-left"><p><i class="ti ti-shield-check"></i> 信頼度ポイント</p><span>「参考になった」で +5pt 獲得</span></div>
+    <div><span class="tscore" id="tscore">0</span><span style="font-size:11px;color:var(--am600);"> pt</span></div>
+  </div>
+  <div class="worry-tabs">
+    <div class="wtab on" onclick="swWTab('all',this)">すべて</div>
+    <div class="wtab" onclick="swWTab('married',this)">既婚</div>
+    <div class="wtab" onclick="swWTab('before',this)">結婚前</div>
+  </div>
+  <div class="rcount" id="wcount"></div>
+  <div id="worry-list"></div>
+</div>
+
+<!-- ============ 先輩データベース ============ -->
+<div class="page" id="page-senpai">
+  <div class="section-title">先輩データベース</div>
+  <div class="section-sub">条件で絞り込んで、似た先輩を探す</div>
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="filter-row">
+      <div class="filter-lbl">年代</div>
+      <div class="seg-group" id="sf-age">
+        <span class="seg" onclick="setSF(this,'age')">20代</span>
+        <span class="seg" onclick="setSF(this,'age')">30代</span>
+        <span class="seg" onclick="setSF(this,'age')">40代以上</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-lbl">性別</div>
+      <div class="seg-group" id="sf-gender">
+        <span class="seg" onclick="setSF(this,'gender')">男性</span>
+        <span class="seg" onclick="setSF(this,'gender')">女性</span>
+        <span class="seg" onclick="setSF(this,'gender')">その他</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-lbl">エリア</div>
+      <div class="seg-group" id="sf-area">
+        <span class="seg" onclick="setSF(this,'area')">首都圏</span>
+        <span class="seg" onclick="setSF(this,'area')">関西圏</span>
+        <span class="seg" onclick="setSF(this,'area')">東海</span>
+        <span class="seg" onclick="setSF(this,'area')">その他</span>
+      </div>
+    </div>
+    <div class="filter-row" style="margin-bottom:0;">
+      <div class="filter-lbl">満足度</div>
+      <div class="seg-group" id="sf-sat">
+        <span class="seg" onclick="setSF(this,'sat')">😊 高め（4〜5）</span>
+        <span class="seg" onclick="setSF(this,'sat')">😐 普通（3）</span>
+        <span class="seg" onclick="setSF(this,'sat')">😔 低め（1〜2）</span>
+      </div>
+    </div>
+  </div>
+  <div class="rcount" id="scount"></div>
+  <div id="senpai-list"></div>
+</div>
+
+<!-- 先輩詳細 -->
+<div class="page" id="page-senpai-detail">
+  <button class="backbtn" onclick="gp('senpai')"><i class="ti ti-arrow-left"></i> 先輩一覧に戻る</button>
+  <div id="detail-content"></div>
+</div>
+
+<!-- ============ 投稿・登録（ログイン分岐） ============ -->
+<!-- 未ログイン：登録を促す -->
+<div class="page" id="page-post-gate">
+  <div class="login-prompt">
+    <i class="ti ti-pencil-plus"></i>
+    <h3>投稿して参加する</h3>
+    <p>投稿すると先輩のコメントや詳細データが<br>閲覧できるようになります。<br>アカウント登録は無料・1分で完了します。</p>
+    <div class="login-actions">
+      <button class="sbtn pk" onclick="gp('register')">新規登録して投稿する</button>
+      <button class="sbtn" style="background:var(--g100);color:var(--g800);margin-top:0;" onclick="gp('register')">ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- 登録フォーム -->
+<div class="page" id="page-register">
+  <button class="backbtn" onclick="gp('post-gate')"><i class="ti ti-arrow-left"></i> 戻る</button>
+  <div class="section-title">アカウント登録</div>
+  <div class="section-sub">あなたの状況を教えてください</div>
+  <div class="card">
+    <div class="field">
+      <label>ニックネーム</label>
+      <input type="text" id="reg-nickname" placeholder="例：まりこ、たろう28歳など">
+    </div>
+    <div class="field"><label>性別</label>
+      <div class="grow">
+        <div class="gbtn" onclick="selG(this,'gm')"><i class="ti ti-man"></i> 男性</div>
+        <div class="gbtn" onclick="selG(this,'gf')"><i class="ti ti-woman"></i> 女性</div>
+        <div class="gbtn" onclick="selG(this,'go')">その他</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>年齢</label>
+      <input type="number" id="reg-age" placeholder="例：28">
+    </div>
+    <div class="field"><label>あなたの状況</label>
+      <div class="grow" style="flex-wrap:wrap;">
+        <div class="gbtn" id="reg-type-m" onclick="selRegType('married')" style="flex:none;padding:10px 16px;">💍 既婚</div>
+        <div class="gbtn" id="reg-type-b" onclick="selRegType('before')" style="flex:none;padding:10px 16px;">💭 結婚前</div>
+      </div>
+    </div>
+  </div>
+  <button class="sbtn pk" onclick="doRegister()">登録して投稿する <i class="ti ti-arrow-right"></i></button>
+</div>
+
+<!-- ログイン済み：投稿フォーム（既婚） -->
+<div class="page" id="page-mpost">
+  <button class="backbtn" onclick="gp('worries')"><i class="ti ti-arrow-left"></i> 戻る</button>
+  <div id="mpost-area">
+    <div class="fhero pk"><h2><i class="ti ti-rings"></i> 投稿する（既婚）</h2><p>今の悩みや、先輩としての経験をシェアしてください</p></div>
+
+    <!-- プロフィール未登録の場合は先輩DBへの登録を勧める -->
+    <div id="mpost-prof-banner" style="display:none;background:var(--am50);border-radius:var(--rmd);padding:.85rem 1rem;margin-bottom:1rem;font-size:13px;color:var(--am600);">
+      <i class="ti ti-info-circle"></i> <strong>先輩データベースにも登録しませんか？</strong><br>
+      <span style="font-size:12px;">プロフィールを入力すると先輩一覧に掲載されます。</span>
+      <button onclick="gp('mprof')" style="display:block;margin-top:.5rem;background:var(--am400);color:#fff;border:none;border-radius:var(--rsm);padding:5px 14px;font-size:12px;cursor:pointer;">プロフィールを入力する</button>
+    </div>
+
+    <div class="card">
+      <div class="field"><label>悩みのカテゴリ（複数選択OK）</label>
+        <div class="tags">
+          <span class="tag" onclick="tog(this,'p')">家事・育児の分担</span>
+          <span class="tag" onclick="tog(this,'p')">お金・家計</span>
+          <span class="tag" onclick="tog(this,'p')">義実家・親族関係</span>
+          <span class="tag" onclick="tog(this,'p')">コミュニケーション不足</span>
+          <span class="tag" onclick="tog(this,'p')">仕事とのバランス</span>
+          <span class="tag" onclick="tog(this,'p')">子育て</span>
+          <span class="tag" onclick="tog(this,'p')">セックスレス</span>
+          <span class="tag" onclick="tog(this,'p')">離婚を考えている</span>
+          <span class="tag" onclick="togO(this,'p','mpost-other')">その他</span>
+        </div>
+        <div class="otherbox" id="mpost-other"><input type="text" placeholder="具体的に教えてください"></div>
+      </div>
+      <div class="field"><label>詳しく教えてください</label>
+        <textarea id="mpost-body" placeholder="例：子どもが生まれてから会話が減った。家事の分担でよくケンカになる。"></textarea>
+      </div>
+    </div>
+    <button class="sbtn pk" onclick="subMPost()">投稿する <i class="ti ti-arrow-right"></i></button>
+  </div>
+  <div class="done" id="mpost-done">
+    <div class="done-ico"><i class="ti ti-circle-check"></i></div>
+    <h3>投稿しました</h3>
+    <p>同じ悩みを持つ人からのコメントが届くかもしれません。</p>
+    <button class="sbtn tc" style="margin-bottom:10px;" onclick="gp('worries')">みんなの悩みを見る <i class="ti ti-arrow-right"></i></button><br>
+    <button class="rbtn" onclick="rstMPost()">もう一度投稿する</button>
+  </div>
+</div>
+
+<!-- ログイン済み：投稿フォーム（結婚前） -->
+<div class="page" id="page-bpost">
+  <button class="backbtn" onclick="gp('worries')"><i class="ti ti-arrow-left"></i> 戻る</button>
+  <div id="bpost-area">
+    <div class="fhero tc"><h2><i class="ti ti-message-circle-question"></i> 投稿する（結婚前）</h2><p>今の悩みをシェアしてください。先輩が答えてくれます。</p></div>
+    <div class="card">
+      <div class="field"><label>結婚への不安度</label>
+        <div class="meter" id="bpm"><div class="mdot" onclick="setM('bp',1)"></div><div class="mdot" onclick="setM('bp',2)"></div><div class="mdot" onclick="setM('bp',3)"></div><div class="mdot" onclick="setM('bp',4)"></div><div class="mdot" onclick="setM('bp',5)"></div></div>
+        <div class="mlbl" id="bpml">タップして選択</div>
+      </div>
+      <div class="field"><label>悩んでいること（複数選択OK）</label>
+        <div class="tags">
+          <span class="tag" onclick="tog(this,'t')">お金・貯金が不安</span>
+          <span class="tag" onclick="tog(this,'t')">タイミングがわからない</span>
+          <span class="tag" onclick="tog(this,'t')">相手との温度差</span>
+          <span class="tag" onclick="tog(this,'t')">そもそも結婚すべきか</span>
+          <span class="tag" onclick="tog(this,'t')">子どものこと</span>
+          <span class="tag" onclick="tog(this,'t')">住む場所</span>
+          <span class="tag" onclick="tog(this,'t')">仕事とのバランス</span>
+          <span class="tag" onclick="tog(this,'t')">親への紹介・挨拶</span>
+          <span class="tag" onclick="tog(this,'t')">相手の収入が不安</span>
+          <span class="tag" onclick="tog(this,'t')">自分の気持ちが揺れている</span>
+          <span class="tag" onclick="tog(this,'t')">性の不一致・相性が不安</span>
+          <span class="tag" onclick="togO(this,'t','bpost-other')">その他</span>
+        </div>
+        <div class="otherbox" id="bpost-other"><input type="text" placeholder="具体的に教えてください"></div>
+      </div>
+      <div class="field"><label>詳しく教えてください</label>
+        <textarea id="bpost-body" placeholder="例：付き合って3年だけど、相手がまだ早いと言っている。28歳でそろそろ焦りを感じている。"></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <div class="optband"><i class="ti ti-lock-open" style="font-size:14px;color:var(--am600);"></i><span>任意項目 — 入力すると</span><span class="ubadge">詳細データ閲覧解放</span></div>
+      <div class="chead"><div class="cico ia"><i class="ti ti-coin"></i></div><span class="ctitle">お金・将来のイメージ</span></div>
+      <div class="r2">
+        <div class="field"><label>必要だと思う貯金額（万円）</label><input type="number" placeholder="例：300"></div>
+        <div class="field"><label>指輪の予算イメージ（万円）</label><input type="number" placeholder="例：20"></div>
+      </div>
+      <div class="field"><label>結婚後の働き方イメージ</label>
+        <select><option value="">選択してください</option><option>ふたりとも正社員継続</option><option>自分が時短・パートに</option><option>相手に養ってもらいたい</option><option>まだ決めていない</option></select>
+      </div>
+      <div class="field"><label>子どもについて</label>
+        <select><option value="">選択してください</option><option>ほしい</option><option>ほしくない</option><option>まだわからない</option><option>相手と意見が合っていない</option></select>
+      </div>
+    </div>
+    <button class="sbtn tc" onclick="subBPost()">投稿する <i class="ti ti-arrow-right"></i></button>
+  </div>
+  <div class="done" id="bpost-done">
+    <div class="done-ico"><i class="ti ti-circle-check"></i></div>
+    <h3>投稿しました</h3>
+    <p>あなたと似た状況を乗り越えた先輩のデータを表示します。</p>
+    <div class="sugbox"><p><i class="ti ti-search"></i> こんな先輩が見つかりました</p><span id="bpost-suggest">先輩の投稿が3件見つかりました</span></div>
+    <button class="sbtn tc" style="margin-bottom:10px;" onclick="gp('senpai')">先輩データを見る <i class="ti ti-arrow-right"></i></button><br>
+    <button class="rbtn" onclick="rstBPost()">もう一度投稿する</button>
+  </div>
+</div>
+
+<!-- 既婚プロフィール登録（先輩DB用） -->
+<div class="page" id="page-mprof">
+  <button class="backbtn" onclick="gp('mpost')"><i class="ti ti-arrow-left"></i> 戻る</button>
+  <div id="mprof-area">
+    <div class="fhero pk"><h2><i class="ti ti-database"></i> 先輩DBに登録する</h2><p>結婚当時の状況を教えてください</p></div>
+    <div class="card">
+      <div class="r2">
+        <div class="field"><label>あなたの年齢（結婚当時）</label><input type="number" id="mp-age" placeholder="例：28"></div>
+        <div class="field"><label>相手の年齢（結婚当時）</label><input type="number" id="mp-sage" placeholder="例：30"></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label>年収（結婚当時・万円）</label><input type="number" id="mp-income" placeholder="例：400"></div>
+        <div class="field"><label>貯金（結婚当時・万円）</label><input type="number" id="mp-saving" placeholder="例：150"></div>
+      </div>
+      <div class="field"><label>居住エリア</label>
+        <select id="mp-area"><option value="">選択してください</option><option>首都圏（東京・神奈川・埼玉・千葉）</option><option>関西圏（大阪・京都・兵庫）</option><option>東海（愛知・静岡・岐阜）</option><option>その他</option></select>
+      </div>
+      <div class="field"><label>交際期間（結婚当時）</label>
+        <select id="mp-period"><option value="">選択してください</option><option>半年未満</option><option>半年〜1年</option><option>1〜2年</option><option>2〜3年</option><option>3〜5年</option><option>5年以上</option></select>
+      </div>
+      <div class="field"><label>結婚の決め手</label>
+        <div class="tags">
+          <span class="tag" onclick="tog(this,'p')">年齢的なタイミング</span>
+          <span class="tag" onclick="tog(this,'p')">相手への安心感</span>
+          <span class="tag" onclick="tog(this,'p')">子どもが欲しい</span>
+          <span class="tag" onclick="tog(this,'p')">経済的な安定</span>
+          <span class="tag" onclick="tog(this,'p')">周りの影響</span>
+          <span class="tag" onclick="tog(this,'p')">勢いで</span>
+          <span class="tag" onclick="togO(this,'p','mp-trigger-other')">その他</span>
+        </div>
+        <div class="otherbox" id="mp-trigger-other"><input type="text" placeholder="具体的に教えてください"></div>
+      </div>
+      <div class="field"><label>満足度</label>
+        <div class="meter" id="mpm"><div class="mdot" onclick="setM('mp',1)"></div><div class="mdot" onclick="setM('mp',2)"></div><div class="mdot" onclick="setM('mp',3)"></div><div class="mdot" onclick="setM('mp',4)"></div><div class="mdot" onclick="setM('mp',5)"></div></div>
+        <div class="mlbl" id="mpml">タップして選択</div>
+      </div>
+      <div class="field"><label>現在の状況</label>
+        <select id="mp-status"><option value="">選択してください</option><option>結婚継続中</option><option>離婚した</option><option>別居中</option></select>
+      </div>
+      <div class="field"><label>よかったこと・後悔していること</label><textarea id="mp-good" placeholder="例：精神的な安定感は増したが、自由な時間が減った。"></textarea></div>
+      <div class="field"><label>迷っている人へひと言</label><textarea id="mp-msg" placeholder="例：貯金が少なくても何とかなる。相手選びが全て。"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="optband"><i class="ti ti-lock-open" style="font-size:14px;color:var(--am600);"></i><span>任意項目 — 入力すると</span><span class="ubadge">詳細データ閲覧解放</span></div>
+      <div class="chead"><div class="cico ip"><i class="ti ti-diamond"></i></div><span class="ctitle">指輪・式のこと（結婚当時）</span></div>
+      <div class="r2">
+        <div class="field"><label>婚約指輪（万円）</label><input type="number" id="mp-ering" placeholder="例：30"></div>
+        <div class="field"><label>結婚指輪・2人分（万円）</label><input type="number" id="mp-wring" placeholder="例：20"></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label>結婚式（万円）</label><input type="number" id="mp-party" placeholder="例：300"></div>
+        <div class="field"><label>新婚旅行（万円）</label><input type="number" id="mp-trip" placeholder="例：40"></div>
+      </div>
+      <div class="chead" style="margin-top:1rem;"><div class="cico it"><i class="ti ti-baby-carriage"></i></div><span class="ctitle">子どものこと</span></div>
+      <div class="field"><label>子どもの有無</label>
+        <select id="mp-ksel" onchange="toggleKids()"><option value="">選択してください</option><option value="yes">いる</option><option value="no">いない</option><option value="plan">これから予定</option></select>
+      </div>
+      <div id="mp-kdtl" style="display:none;">
+        <div class="r3">
+          <div class="field"><label>人数</label><input type="number" placeholder="例：2" min="1"></div>
+          <div class="field"><label>第一子：結婚何年目</label><input type="number" placeholder="例：2" min="1"></div>
+          <div class="field"><label>第一子時の貯金（万円）</label><input type="number" placeholder="例：200"></div>
+        </div>
+      </div>
+    </div>
+    <button class="sbtn pk" onclick="subMProf()">先輩DBに登録する <i class="ti ti-arrow-right"></i></button>
+  </div>
+  <div class="done" id="mprof-done">
+    <div class="done-ico"><i class="ti ti-circle-check"></i></div>
+    <h3>先輩DBに登録しました</h3>
+    <p>あなたの経験が、迷っている誰かの参考になります。</p>
+    <div class="sugbox"><p><i class="ti ti-lock-open"></i> 詳細データ閲覧が解放されました</p><span>費用・子育てデータが見られます</span></div>
+    <button class="sbtn pk" style="margin-bottom:10px;" onclick="gp('senpai')">先輩データベースを見る <i class="ti ti-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ============ マイページ ============ -->
+<div class="page" id="page-mypage">
+  <div id="mypage-noprof">
+    <div class="mypage-header">
+      <div class="mypage-avatar"><i class="ti ti-user"></i></div>
+      <div class="mypage-name">ゲスト</div>
+      <div class="mypage-sub">まだ登録していません</div>
+    </div>
+    <div class="no-profile-msg">
+      <i class="ti ti-pencil-plus"></i>
+      <p>登録すると投稿・コメントができます</p>
+      <button class="sbtn pk" onclick="gp('post-gate')">登録する <i class="ti ti-arrow-right"></i></button>
+    </div>
+  </div>
+  <div id="mypage-withprof" style="display:none;">
+    <div class="mypage-header">
+      <div class="mypage-avatar"><i class="ti ti-user-circle"></i></div>
+      <div class="mypage-name" id="my-name">ユーザー</div>
+      <div class="mypage-sub" id="my-sub"></div>
+    </div>
+    <div class="mypage-stats">
+      <div class="mystat"><div class="mystat-num" id="my-posts">0</div><div class="mystat-lbl">投稿数</div></div>
+      <div class="mystat"><div class="mystat-num" id="my-pts">0</div><div class="mystat-lbl">ポイント</div></div>
+      <div class="mystat"><div class="mystat-num" id="my-comments">0</div><div class="mystat-lbl">コメント数</div></div>
+    </div>
+    <div class="mypage-menu">
+      <div class="menu-item" onclick="gotoPost()"><div class="menu-left"><i class="ti ti-pencil"></i>悩みを投稿する</div><i class="ti ti-chevron-right"></i></div>
+      <div class="menu-item" onclick="gp('mprof')"><div class="menu-left"><i class="ti ti-database"></i>先輩DBに登録・編集</div><i class="ti ti-chevron-right"></i></div>
+      <div class="menu-item" onclick="gp('worries')"><div class="menu-left"><i class="ti ti-messages"></i>みんなの悩みを見る</div><i class="ti ti-chevron-right"></i></div>
+      <div class="menu-item" onclick="gp('senpai')"><div class="menu-left"><i class="ti ti-database"></i>先輩データベースを見る</div><i class="ti ti-chevron-right"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BOTTOM NAV ============ -->
+<div class="tabbar-bottom">
+  <button class="tbb-item" id="tbb-top" onclick="gp('top')"><i class="ti ti-home"></i>トップ</button>
+  <button class="tbb-item on" id="tbb-worries" onclick="gp('worries')"><i class="ti ti-messages"></i>悩み</button>
+  <button class="tbb-item" id="tbb-senpai" onclick="gp('senpai')"><i class="ti ti-database"></i>先輩DB</button>
+  <button class="tbb-item" id="tbb-post" onclick="gotoPost()"><i class="ti ti-circle-plus"></i>投稿</button>
+  <button class="tbb-item" id="tbb-mypage" onclick="gp('mypage')"><i class="ti ti-user-circle"></i>マイページ</button>
+</div>
+
+<!-- 登録促進モーダル -->
+<div class="modal-overlay" id="reg-modal" onclick="if(event.target.id==='reg-modal')closeRegModal()">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="ti ti-lock"></i></div>
+    <h3>投稿するとコメントが読めます</h3>
+    <p>登録不要・1分で完了します。</p>
+    <div class="modal-actions">
+      <button class="modal-primary" onclick="closeRegModal();gp('post-gate')"><i class="ti ti-pencil"></i> 登録して全コメントを見る</button>
+      <button class="modal-secondary" onclick="closeRegModal()">あとで</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───
+const SL={1:'後悔',2:'あまりよくない',3:'普通',4:'満足',5:'とても満足'};
+const SC={1:'#F09595',2:'#EF9F27',3:'#FAC775',4:'#9FE1CB',5:'#1D9E75'};
+const MC=['#F09595','#EF9F27','#FAC775','#9FE1CB','#1D9E75'];
+const LM=['後悔している','あまりよくない','普通','満足','とても満足'];
+const LB=['少し不安','まあ不安','かなり不安','とても不安','もう限界'];
+
+let trust=0;
+let senpaiFilters={};
+// ユーザー状態: null=未登録, {nickname, age, type:'married'|'before'} = 登録済み
+let currentUser=null;
+let profRegistered=false; // 先輩DB登録済みか
+
+// ─── 先輩データ ───
+const senpaiData=[
+  {id:1,gender:'女性',age:29,area:'首都圏',income:380,saving:200,period:'2〜3年',sat:4,
+   trigger:['相手への安心感','年齢的なタイミング'],status:'結婚継続中',
+   good:'精神的な安定感は増した。自由な時間は減ったけど、孤独感がなくなった。',
+   msg:'貯金が少なくても、2人で稼げば何とかなります。相手選びが大事。',
+   ering:30,wring:22,party:250,trip:35,kids:{count:1,year:2,saving:180},concerns:['子育て'],
+   worries:[
+     {id:101,body:'子どもが生まれてから生活が一変。大変だけど充実している。',comments:[{user:'ゲスト002',trust:12,text:'子育ての大変さ、すごくリアルに伝わります！',likes:3,liked:false}]},
+     {id:102,body:'育休明けの職場復帰が不安。周りのサポートが少なくて。',comments:[{user:'ゲスト008',trust:22,text:'わかります。職場に相談してみましたか？',likes:2,liked:false},{user:'ゲスト011',trust:5,text:'育休明け本当に大変でした。応援してます！',likes:1,liked:false}]},
+   ]},
+  {id:2,gender:'男性',age:33,area:'首都圏',income:520,saving:300,period:'3〜5年',sat:2,
+   trigger:['子どもが欲しい'],status:'別居中',
+   good:'義実家との関係がしんどい。結婚前にもっと話し合うべきだった。後悔している部分がある。',
+   msg:'相手の家族との相性も大事。付き合ってるときからしっかり確認すべき。',
+   ering:0,wring:18,party:300,trip:0,kids:{count:0},concerns:['義実家問題','価値観のズレ'],
+   worries:[
+     {id:103,body:'義実家との関係がしんどい。一緒に頑張れると思っていたのに。',comments:[{user:'ゲスト015',trust:28,text:'義実家問題、本当につらいですよね。',likes:5,liked:false}]},
+   ]},
+  {id:3,gender:'女性',age:27,area:'関西圏',income:280,saving:80,period:'半年〜1年',sat:5,
+   trigger:['勢いで','子どもが欲しい'],status:'結婚継続中',
+   good:'授かり婚だったけど後悔ゼロ。勢いって大事だと思う。お金は後からついてくる。',
+   msg:'完璧な条件を待っていたら一生結婚できない。直感を信じて！',
+   ering:0,wring:15,party:0,trip:20,kids:{count:1,year:0,saving:50},concerns:[],
+   worries:[]},
+  {id:4,gender:'男性',age:31,area:'首都圏',income:600,saving:500,period:'5年以上',sat:4,
+   trigger:['経済的な安定','相手への安心感'],status:'結婚継続中',
+   good:'5年付き合ってから結婚したので、お互いよく分かった状態でスタートできた。',
+   msg:'焦らなくていい。でも長すぎると相手が疲れるので注意。',
+   ering:50,wring:30,party:350,trip:60,kids:{count:0},concerns:['お金・家計'],
+   worries:[]},
+  {id:5,gender:'女性',age:35,area:'東海',income:350,saving:400,period:'2〜3年',sat:3,
+   trigger:['年齢的なタイミング','周りの影響'],status:'結婚継続中',
+   good:'35歳で結婚。もう少し早くてもよかったかも。でも仕事でのキャリアもあるし複雑。',
+   msg:'年齢で焦って結婚するのも考えもの。でも私は後悔していない。',
+   ering:25,wring:20,party:200,trip:40,kids:{count:0},concerns:['仕事とのバランス'],
+   worries:[]},
+];
+
+let worryPosts=[
+  {id:1,type:'married',nickname:'先輩A',age:29,area:'首都圏',sat:4,concern:['子育て'],
+   body:'子どもが生まれてから生活が一変。大変だけど充実している。',
+   comments:[{user:'先輩C',trust:45,text:'本当に子育ては大変ですが、充実しますよね！',likes:8,liked:false}]},
+  {id:2,type:'married',nickname:'先輩B',age:33,area:'首都圏',sat:2,concern:['義実家問題','価値観のズレ'],
+   body:'義実家との関係がしんどい。結婚前にもっと話し合うべきだった。',
+   comments:[{user:'先輩D',trust:28,text:'義実家問題、本当につらいですよね。',likes:5,liked:false}]},
+  {id:3,type:'married',nickname:'先輩C',age:27,area:'関西圏',sat:5,concern:[],
+   body:'授かり婚だったけど後悔ゼロ。勢いって大事だと思う。',
+   comments:[]},
+  {id:4,type:'before',nickname:'なな26',age:26,area:'首都圏',concern:['お金・貯金が不安','タイミングがわからない'],
+   body:'付き合って2年半。彼氏は結婚を考えてるみたいだけど貯金が少なくて踏み出せない。',
+   comments:[{user:'先輩E',trust:45,text:'私も同じ状況でした。結婚して2年、あの不安は杞憂でした！',likes:8,liked:false}]},
+  {id:5,type:'before',nickname:'たろう29',age:29,area:'首都圏',concern:['相手との温度差','そもそも結婚すべきか'],
+   body:'付き合って4年。自分は結婚したいが相手がまだ早いという。このまま待ち続けていいのか悩んでいる。',
+   comments:[]},
+];
+
+// ─── NAV ───
+const pageTabMap={
+  top:'tbb-top', worries:'tbb-worries', senpai:'tbb-senpai',
+  'senpai-detail':null, 'post-gate':'tbb-post', register:null,
+  mpost:'tbb-post', bpost:'tbb-post', mprof:null, mypage:'tbb-mypage'
+};
+function gp(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  document.querySelectorAll('.tbb-item').forEach(b=>b.classList.remove('on'));
+  const tbb=pageTabMap[id];
+  if(tbb) document.getElementById(tbb).classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='worries') renderWorries();
+  if(id==='senpai') renderSenpai();
+  if(id==='mypage') renderMypage();
+}
+
+// 投稿ボタン：ログイン状態で分岐
+function gotoPost(){
+  if(!currentUser){gp('post-gate');}
+  else if(currentUser.type==='married'){
+    document.getElementById('mpost-prof-banner').style.display=profRegistered?'none':'block';
+    gp('mpost');
+  }
+  else{gp('bpost');}
+}
+
+// ─── 登録 ───
+let regType=null;
+function selRegType(t){
+  regType=t;
+  document.getElementById('reg-type-m').classList.toggle('gf',t==='married');
+  document.getElementById('reg-type-b').classList.toggle('gt',t==='before');
+  document.getElementById('reg-type-m').style.background=t==='married'?'var(--pk50)':'';
+  document.getElementById('reg-type-m').style.borderColor=t==='married'?'var(--pk100)':'';
+  document.getElementById('reg-type-b').style.background=t==='before'?'var(--tc50)':'';
+  document.getElementById('reg-type-b').style.borderColor=t==='before'?'var(--tc100)':'';
+}
+function doRegister(){
+  const nick=document.getElementById('reg-nickname').value.trim()||'ユーザー';
+  const age=parseInt(document.getElementById('reg-age').value)||25;
+  const type=regType||'before';
+  currentUser={nickname:nick,age,type};
+  updateNavUser();
+  // 登録後は投稿画面へ
+  if(type==='married'){
+    document.getElementById('mpost-prof-banner').style.display='block';
+    gp('mpost');
+  } else {
+    gp('bpost');
+  }
+}
+function updateNavUser(){
+  if(currentUser){
+    document.getElementById('nav-user-info').textContent=currentUser.nickname;
+  }
+}
+
+// ─── FORM HELPERS ───
+function tog(el,c){el.classList.toggle(c);}
+function togO(el,c,id){
+  el.classList.toggle(c);
+  document.getElementById(id).style.display=el.classList.contains(c)?'block':'none';
+}
+function selG(el,c){
+  el.parentElement.querySelectorAll('.gbtn').forEach(b=>b.classList.remove('gm','gf','go'));
+  el.classList.add(c);
+}
+function setM(p,n){
+  const id=p==='mp'?'mpm':p==='bp'?'bpm':'';
+  if(!id) return;
+  const dots=document.querySelectorAll('#'+id+' .mdot');
+  dots.forEach((d,i)=>{d.style.background=i<n?MC[n-1]:'';d.style.borderColor=i<n?MC[n-1]:'';});
+  const l=document.getElementById(p+'ml');
+  l.textContent=(p==='mp'?LM:LB)[n-1];l.style.color=MC[n-1];
+}
+function toggleKids(){document.getElementById('mp-kdtl').style.display=document.getElementById('mp-ksel').value==='yes'?'block':'none';}
+
+// ─── SUBMISSIONS ───
+function subMProf(){
+  profRegistered=true;
+  document.getElementById('mprof-area').style.display='none';
+  document.getElementById('mprof-done').style.display='block';
+  window.scrollTo(0,0);
+}
+function subMPost(){
+  const body=document.getElementById('mpost-body').value.trim();
+  if(body&&currentUser){
+    worryPosts.unshift({id:Date.now(),type:'married',nickname:currentUser.nickname,age:currentUser.age,area:'',concern:[],body,comments:[]});
+  }
+  document.getElementById('mpost-area').style.display='none';
+  document.getElementById('mpost-done').style.display='block';
+  window.scrollTo(0,0);
+  if(document.getElementById('my-posts'))document.getElementById('my-posts').textContent=parseInt(document.getElementById('my-posts').textContent||0)+1;
+}
+function rstMPost(){document.getElementById('mpost-area').style.display='block';document.getElementById('mpost-done').style.display='none';}
+function subBPost(){
+  const body=document.getElementById('bpost-body').value.trim();
+  if(body&&currentUser){
+    worryPosts.unshift({id:Date.now(),type:'before',nickname:currentUser.nickname,age:currentUser.age,area:'',concern:[],body,comments:[]});
+    document.getElementById('bpost-suggest').textContent=ag(currentUser.age)+'で悩んでいた先輩が3件見つかりました';
+  }
+  document.getElementById('bpost-area').style.display='none';
+  document.getElementById('bpost-done').style.display='block';
+  window.scrollTo(0,0);
+}
+function rstBPost(){document.getElementById('bpost-area').style.display='block';document.getElementById('bpost-done').style.display='none';}
+
+// ─── WORRIES ───
+let curWTab='all';
+function swWTab(tab,el){
+  curWTab=tab;
+  document.querySelectorAll('.wtab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderWorries();
+}
+function ag(a){return a<30?'20代':a<40?'30代':'40代以上';}
+
+function renderWorries(){
+  let data=worryPosts.filter(d=>curWTab==='all'||d.type===curWTab);
+  const wrap=document.getElementById('worry-list');
+  document.getElementById('wcount').textContent=data.length+'件の投稿';
+  if(!data.length){wrap.innerHTML='<div class="empty"><i class="ti ti-mood-empty" style="font-size:32px;display:block;margin-bottom:8px;"></i>投稿がまだありません</div>';return;}
+  wrap.innerHTML=data.map(d=>{
+    const isM=d.type==='married';
+    const tags=(d.concern||[]).map(t=>'<span class="wtag">'+t+'</span>').join('');
+    const satPct=isM&&d.sat?Math.round((d.sat/5)*100):0;
+    const cH=(d.comments||[]).map((c,ci)=>
+      '<div class="cm"><div class="cuser"><i class="ti ti-user-circle" style="font-size:14px;"></i> '+c.user+
+      ' <span class="tbadge">'+c.trust+'pt</span></div>'+
+      '<div class="ctext">'+c.text+'</div>'+
+      '<div class="cacts"><button class="clke'+(c.liked?' lk':'')+'\" onclick="lkW('+d.id+','+ci+')\"><i class="ti ti-thumb-up" style="font-size:12px;"></i> 参考になった '+c.likes+'</button></div></div>'
+    ).join('');
+    const metaParts=[d.nickname||'',d.age?ag(d.age):'',d.area].filter(Boolean);
+    return '<div class="wcard"><div class="wcard-head"><span class="wbadge '+(isM?'bpk':'btc')+'">'+(isM?'既婚':'結婚前')+'</span>'+
+      '<span class="wmeta">'+metaParts.join('・')+'</span></div>'+
+      (tags?'<div class="wtags">'+tags+'</div>':'')+
+      '<div class="wbody">'+d.body+'</div>'+
+      (isM&&d.sat?'<div class="satrow"><span class="satlbl">'+SL[d.sat]+'</span><div class="satbg"><div class="satfill" style="width:'+satPct+'%;background:'+SC[d.sat]+';"></div></div></div>':'')+
+      '<div class="csec"><button class="wact" onclick="togWC('+d.id+')"><i class="ti ti-message-circle" style="font-size:13px;"></i> コメント（'+(d.comments||[]).length+'）</button>'+
+      '<div class="clist" id="wc-'+d.id+'">'+cH+
+      '<div class="cform"><input class="cinput" placeholder="コメントを入力..." id="wci-'+d.id+'">'+
+      '<button class="csend" onclick="addWC('+d.id+')">送信</button></div>'+
+      '</div></div></div>';
+  }).join('');
+}
+function togWC(id){
+  if(!currentUser){document.getElementById('reg-modal').classList.add('on');return;}
+  document.getElementById('wc-'+id).classList.toggle('on');
+}
+function addWC(id){
+  const inp=document.getElementById('wci-'+id),txt=inp.value.trim();
+  if(!txt)return;
+  const p=worryPosts.find(x=>x.id===id);
+  if(!p.comments)p.comments=[];
+  p.comments.push({user:currentUser?currentUser.nickname:'あなた',trust,text:txt,likes:0,liked:false});
+  inp.value='';renderWorries();
+  document.getElementById('wc-'+id).classList.add('on');
+}
+function lkW(id,ci){
+  const p=worryPosts.find(x=>x.id===id);
+  const c=p.comments[ci];
+  if(c.liked)return;
+  c.liked=true;c.likes++;trust+=5;
+  document.getElementById('tscore').textContent=trust;
+  if(document.getElementById('my-pts'))document.getElementById('my-pts').textContent=trust;
+  renderWorries();
+  document.getElementById('wc-'+id).classList.add('on');
+}
+
+// ─── SENPAI ───
+function setSF(el,key){
+  const group=el.parentElement;
+  const already=el.classList.contains('on-p');
+  group.querySelectorAll('.seg').forEach(s=>s.classList.remove('on-p'));
+  if(!already){el.classList.add('on-p');senpaiFilters[key]=el.textContent.trim();}
+  else{delete senpaiFilters[key];}
+  renderSenpai();
+}
+function renderSenpai(){
+  let data=[...senpaiData];
+  if(senpaiFilters.age){
+    data=data.filter(d=>{
+      const a=senpaiFilters.age;
+      if(a==='20代') return d.age<30;
+      if(a==='30代') return d.age>=30&&d.age<40;
+      return d.age>=40;
+    });
+  }
+  if(senpaiFilters.gender) data=data.filter(d=>d.gender===senpaiFilters.gender);
+  if(senpaiFilters.area) data=data.filter(d=>d.area===senpaiFilters.area||d.area.startsWith(senpaiFilters.area));
+  if(senpaiFilters.sat){
+    data=data.filter(d=>{
+      const s=senpaiFilters.sat;
+      if(s.includes('高め')) return d.sat>=4;
+      if(s.includes('普通')) return d.sat===3;
+      return d.sat<=2;
+    });
+  }
+  const wrap=document.getElementById('senpai-list');
+  document.getElementById('scount').textContent=data.length+'人の先輩';
+  if(!data.length){wrap.innerHTML='<div class="empty"><i class="ti ti-mood-empty" style="font-size:32px;display:block;margin-bottom:8px;"></i>条件に合う先輩が見つかりません</div>';return;}
+  wrap.innerHTML=data.map(d=>{
+    const sat=d.sat||1;
+    return '<div class="scard" onclick="showDetail('+d.id+')">'+
+      '<div class="scard-head">'+
+      '<div class="scard-id"><i class="ti ti-user-circle" style="font-size:14px;vertical-align:middle;margin-right:4px;"></i>'+d.gender+'・'+ag(d.age)+'・'+d.area+'</div>'+
+      '<div class="sat-chip" style="background:'+SC[sat]+'22;color:'+SC[sat].replace('#1D9E75','#0F6E56').replace('#9FE1CB','#0F6E56')+';">'+SL[sat]+'</div></div>'+
+      '<div class="scard-data">'+
+      '<div class="sdata-item"><div class="sdata-lbl">年収（当時）</div><div class="sdata-val">'+d.income+'万</div></div>'+
+      '<div class="sdata-item"><div class="sdata-lbl">貯金（当時）</div><div class="sdata-val">'+d.saving+'万</div></div>'+
+      '<div class="sdata-item"><div class="sdata-lbl">交際期間（当時）</div><div class="sdata-val">'+d.period+'</div></div>'+
+      '</div>'+
+      '<div class="scard-body">'+d.good.slice(0,60)+(d.good.length>60?'…':'')+'</div>'+
+      '<div class="scard-more"><i class="ti ti-arrow-right"></i> 詳細'+(d.worries.length>0?' · 悩み'+d.worries.length+'件':'')+'を見る</div></div>';
+  }).join('');
+}
+
+function showDetail(id){
+  const d=senpaiData.find(x=>x.id===id);
+  if(!d) return;
+  const sat=d.sat||1;
+  const locked=!currentUser;
+  let html='<div class="detail-hero">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;">'+
+    '<span style="font-size:15px;font-weight:600;">'+d.gender+'・'+ag(d.age)+'・'+d.area+'</span>'+
+    '<span class="sat-chip" style="background:'+SC[sat]+'22;color:'+SC[sat].replace('#1D9E75','#0F6E56')+';">'+SL[sat]+' '+sat+'/5</span></div>'+
+    '<div style="font-size:12px;color:var(--pk600);">'+d.status+'</div></div>'+
+    '<div class="detail-grid">'+
+    '<div class="detail-item"><div class="detail-lbl">年収（当時）</div><div class="detail-val">'+d.income+'万円</div></div>'+
+    '<div class="detail-item"><div class="detail-lbl">貯金（当時）</div><div class="detail-val">'+d.saving+'万円</div></div>'+
+    '<div class="detail-item"><div class="detail-lbl">交際期間（当時）</div><div class="detail-val">'+d.period+'</div></div>'+
+    '<div class="detail-item"><div class="detail-lbl">エリア</div><div class="detail-val">'+d.area+'</div></div>'+
+    '</div>';
+  if(d.trigger.length>0){
+    html+='<div class="detail-section"><div class="detail-section-title">結婚の決め手</div>'+
+      '<div class="wtags">'+d.trigger.map(t=>'<span class="wtag">'+t+'</span>').join('')+'</div></div>';
+  }
+  html+='<div class="detail-section"><div class="detail-section-title">よかったこと・後悔</div>'+
+    '<div style="font-size:13px;color:var(--g600);line-height:1.7;">'+d.good+'</div></div>'+
+    '<div class="detail-section"><div class="detail-section-title">迷っている人へひと言</div>'+
+    '<div style="font-size:13px;color:var(--g600);line-height:1.7;background:var(--pk50);border-radius:var(--rsm);padding:.75rem 1rem;">"'+d.msg+'"</div></div>';
+
+  // 詳細データ
+  if(locked){
+    html+='<div class="locked-block"><i class="ti ti-lock"></i><p>登録すると詳細データ（費用・子育て等）が見られます</p><small>指輪・式・旅行・子どもデータ</small><br><button class="sbtn pk" style="margin-top:.75rem;max-width:240px;" onclick="gp(\'post-gate\')">登録して解放する <i class="ti ti-lock-open"></i></button></div>';
+  } else {
+    html+='<div class="detail-section"><div class="detail-section-title"><i class="ti ti-lock-open" style="color:var(--am400);"></i> 詳細データ（指輪・式）</div>'+
+      '<div class="detail-grid">'+
+      '<div class="detail-item"><div class="detail-lbl">婚約指輪</div><div class="detail-val">'+(d.ering?d.ering+'万円':'なし')+'</div></div>'+
+      '<div class="detail-item"><div class="detail-lbl">結婚指輪（2人）</div><div class="detail-val">'+d.wring+'万円</div></div>'+
+      '<div class="detail-item"><div class="detail-lbl">結婚式</div><div class="detail-val">'+(d.party?d.party+'万円':'なし')+'</div></div>'+
+      '<div class="detail-item"><div class="detail-lbl">新婚旅行</div><div class="detail-val">'+(d.trip?d.trip+'万円':'なし')+'</div></div>'+
+      '</div></div>';
+    html+='<div class="detail-section"><div class="detail-section-title"><i class="ti ti-baby-carriage"></i> 子どもデータ</div>'+
+      '<div class="detail-grid">'+
+      (d.kids.count?
+        '<div class="detail-item"><div class="detail-lbl">人数</div><div class="detail-val">'+d.kids.count+'人</div></div>'+
+        (d.kids.year!==undefined?'<div class="detail-item"><div class="detail-lbl">第一子：結婚何年目</div><div class="detail-val">'+d.kids.year+'年目</div></div>':'')+
+        (d.kids.saving?'<div class="detail-item"><div class="detail-lbl">第一子時の貯金</div><div class="detail-val">'+d.kids.saving+'万円</div></div>':''):
+        '<div class="detail-item"><div class="detail-lbl">子ども</div><div class="detail-val">なし</div></div>')+
+      '</div></div>';
+  }
+
+  // 悩み投稿（複数対応）
+  if(d.worries&&d.worries.length>0){
+    html+='<div class="detail-section"><div class="detail-section-title"><i class="ti ti-messages"></i> この先輩の悩み投稿（'+d.worries.length+'件）</div>'+
+      d.worries.map(w=>{
+        const cH=w.comments.map((c,ci)=>
+          '<div class="cm"><div class="cuser"><i class="ti ti-user-circle" style="font-size:14px;"></i> '+c.user+' <span class="tbadge">'+c.trust+'pt</span></div>'+
+          '<div class="ctext">'+c.text+'</div>'+
+          '<div class="cacts"><button class="clke'+(c.liked?' lk':'')+'\" onclick="lkSD('+d.id+','+w.id+','+ci+')\"><i class="ti ti-thumb-up" style="font-size:12px;"></i> 参考になった '+c.likes+'</button></div></div>'
+        ).join('');
+        return '<div class="wcard" style="cursor:default;margin-bottom:8px;">'+
+          '<div class="wbody">'+w.body+'</div>'+
+          '<div class="csec"><button class="wact" onclick="togSDC(\'sdc-'+w.id+'\')" ><i class="ti ti-message-circle" style="font-size:13px;"></i> コメント（'+w.comments.length+'）</button>'+
+          '<div class="clist" id="sdc-'+w.id+'">'+cH+
+          '<div class="cform"><input class="cinput" placeholder="コメントを入力..." id="sdci-'+w.id+'">'+
+          '<button class="csend" onclick="addSDC('+d.id+','+w.id+')">送信</button></div></div></div></div>';
+      }).join('')+'</div>';
+  }
+
+  document.getElementById('detail-content').innerHTML=html;
+  gp('senpai-detail');
+}
+function togSDC(id){
+  if(!currentUser){document.getElementById('reg-modal').classList.add('on');return;}
+  document.getElementById(id).classList.toggle('on');
+}
+function addSDC(sid,wid){
+  const inp=document.getElementById('sdci-'+wid),txt=inp.value.trim();
+  if(!txt)return;
+  const s=senpaiData.find(x=>x.id===sid);
+  const w=s.worries.find(x=>x.id===wid);
+  w.comments.push({user:currentUser?currentUser.nickname:'あなた',trust,text:txt,likes:0,liked:false});
+  inp.value='';showDetail(sid);
+  setTimeout(()=>document.getElementById('sdc-'+wid).classList.add('on'),50);
+}
+function lkSD(sid,wid,ci){
+  const s=senpaiData.find(x=>x.id===sid);
+  const w=s.worries.find(x=>x.id===wid);
+  const c=w.comments[ci];
+  if(c.liked)return;
+  c.liked=true;c.likes++;trust+=5;
+  document.getElementById('tscore').textContent=trust;
+  showDetail(sid);
+  setTimeout(()=>document.getElementById('sdc-'+wid).classList.add('on'),50);
+}
+
+// ─── MYPAGE ───
+function renderMypage(){
+  if(!currentUser){
+    document.getElementById('mypage-noprof').style.display='block';
+    document.getElementById('mypage-withprof').style.display='none';
+  } else {
+    document.getElementById('mypage-noprof').style.display='none';
+    document.getElementById('mypage-withprof').style.display='block';
+    document.getElementById('my-name').textContent=currentUser.nickname;
+    document.getElementById('my-sub').textContent=(currentUser.type==='married'?'既婚':'結婚前')+'・'+ag(currentUser.age);
+    document.getElementById('my-pts').textContent=trust;
+  }
+}
+
+// ─── MODAL ───
+function closeRegModal(){document.getElementById('reg-modal').classList.remove('on');}
+
+// ─── INIT ───
+renderWorries();
+renderSenpai();
+</script>
+</body>
+</html>
